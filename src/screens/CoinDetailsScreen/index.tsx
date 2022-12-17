@@ -1,11 +1,13 @@
-import { Text, View, Image } from "react-native";
-import { Ionicons, EvilIcons, AntDesign } from "@expo/vector-icons";
-
+import { Text, View, Dimensions } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import coin from "../../../assets/data/crypto.json";
 import styles from "./styles";
 import Header from "./components/Header";
 import { LineGraph, GraphPoint } from "react-native-graph";
+import { SelectionDot } from "./components/SelectionDot";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const CoinDetailsScreen = () => {
   const {
@@ -54,7 +56,15 @@ const CoinDetailsScreen = () => {
         points={points}
         color="#16c784"
         animated={false}
-        style={{ width: 275, height: 175, alignSelf: "center", marginTop: 25 }}
+        // animated={true}
+        // enablePanGesture={true}
+        // SelectionDot={SelectionDot}
+        style={{
+          width: SCREEN_WIDTH,
+          height: SCREEN_WIDTH / 2,
+          alignSelf: "center",
+          marginTop: 25,
+        }}
       />
     </View>
   );
