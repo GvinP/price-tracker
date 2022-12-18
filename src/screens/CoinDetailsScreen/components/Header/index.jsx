@@ -3,13 +3,7 @@ import { Ionicons, EvilIcons } from "@expo/vector-icons";
 import React from "react";
 import styles from "./styles";
 
-interface HeaderProps {
-  image: string;
-  symbol: string;
-  market_cap_rank: number;
-}
-
-const Header: React.FC<HeaderProps> = ({ image, symbol, market_cap_rank }) => {
+const Header = ({ image, symbol, market_cap_rank }) => {
   return (
     <View style={styles.header}>
       <Ionicons name="chevron-back-sharp" color={"#FFFFFF"} size={30} />

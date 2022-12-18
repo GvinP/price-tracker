@@ -2,9 +2,8 @@ import { Text, View, Image } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
-import { CoinItemType } from "../../screens/HomeScreen";
 
-const CoinItem: React.FC<CoinItemType> = ({
+const CoinItem = ({
   image,
   name,
   symbol,
@@ -15,7 +14,7 @@ const CoinItem: React.FC<CoinItemType> = ({
 }) => {
   const percentageColor =
     price_change_percentage_24h < 0 ? "#EA3943" : "#16c784";
-  const normalizeMarketCap = (marketCap: number) => {
+  const normalizeMarketCap = (marketCap) => {
     if (marketCap > 1_000_000_000_000) {
       return `${Math.floor(marketCap / 1_000_000_000_000)} T`;
     }
