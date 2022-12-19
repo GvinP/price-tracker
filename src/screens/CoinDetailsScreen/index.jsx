@@ -8,6 +8,7 @@ import {
   ChartDot,
   ChartPath,
   ChartPathProvider,
+  ChartYLabel,
 } from "@rainbow-me/animated-charts";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -24,23 +25,19 @@ const CoinDetailsScreen = () => {
     prices,
     name,
   } = coin;
-  const [points, setPoints] = useState(
-    prices.map((el) => ({
-      x: el[0],
-      y: el[1],
-    }))
-  );
+  const [points, setPoints] = useState(prices.map(([x, y]) => ({ x, y })));
   const percentageColor =
     price_change_percentage_24h < 0 ? "#EA3943" : "#16c784";
   useEffect(() => {
-    setPoints(
-      prices.map((el) => ({
-        x: el[0],
-        y: el[1],
-      }))
-    );
+    setPoints(prices.map(([x, y]) => ({ x, y })));
   }, []);
-
+  const formatCurrency = (value) => {
+    "worklet";
+    if (value === "") {
+      return `$${current_price.usd.toFixed(2)}`;
+    }
+    return `$${parseFloat(value).toFixed(2)}`;
+  };
   return (
     <View style={styles.container}>
       <ChartPathProvider
@@ -53,7 +50,7 @@ const CoinDetailsScreen = () => {
         <View style={styles.priceContainer}>
           <View>
             <Text style={styles.title}>{name}</Text>
-            <Text style={styles.price}>${current_price.usd}</Text>
+            <ChartYLabel format={formatCurrency} style={styles.price} />
           </View>
           <View
             style={[
