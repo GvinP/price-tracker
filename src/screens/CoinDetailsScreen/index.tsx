@@ -1,11 +1,27 @@
 import { Text, View, Image } from "react-native";
 import { Ionicons, EvilIcons, AntDesign } from "@expo/vector-icons";
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import coin from "../../../assets/data/crypto.json";
 import styles from "./styles";
 import Header from "./components/Header";
-import { LineGraph, GraphPoint } from "react-native-graph";
+import {
+  Canvas,
+  Group,
+  Line,
+  LinearGradient,
+  Path,
+  Skia,
+  vec,
+} from "@shopify/react-native-skia";
+import { curveBasis, line, scaleLinear } from "d3";
+import { getCoinMarketChart } from "../../services/requests";
+
+type DataPoint = {
+  date: number;
+  value: number;
+};
+const GRAPH_HEIGHT = 150;
+const GRAPH_WIDTH = 400;
 
 const CoinDetailsScreen = () => {
   const {
@@ -18,13 +34,44 @@ const CoinDetailsScreen = () => {
     symbol,
     prices,
     name,
+    id
   } = coin;
+  const getCoin = async () => {
+    const coinData = await getCoinMarketChart(id, 7);
+    //@ts-ignore
+    const points: DataPoint[] = coinData.prices.map((el) => ({
+      date: el[0],
+      value: el[1],
+    }));
+    setCoinPrices(points);
+  };
+  const [coinPrices, setCoinPrices] = useState<DataPoint[]>([]);
+  useEffect(() => {
+    getCoin();
+  }, []);
   const percentageColor =
     price_change_percentage_24h < 0 ? "#EA3943" : "#16c784";
-  const points: GraphPoint[] = prices.map((el) => ({
-    date: new Date(el[0]),
-    value: el[1],
-  }));
+  const makeGraph = (data: DataPoint[]) => {
+    const min = Math.min(...data.map((val) => val.value));
+    const max = Math.max(...data.map((val) => val.value));
+    const minDate = Math.min(...data.map((val) => val.date));
+    const maxDate = Math.max(...data.map((val) => val.date));
+    console.log(min);
+    console.log(max);
+    console.log(minDate);
+    console.log(maxDate);
+    const getYAxis = scaleLinear().domain([min, max]).range([GRAPH_HEIGHT, 0]);
+    const getXAxis = scaleLinear()
+      .domain([minDate, maxDate])
+      .range([10, GRAPH_WIDTH - 10]);
+    const curveLine = line<DataPoint>()
+      .x((d) => getXAxis(d.date))
+      .y((d) => getYAxis(d.value))
+      .curve(curveBasis)(data);
+    const skPath = Skia.Path.MakeFromSVGString(curveLine || "") || "";
+    return { min, max, curve: skPath! };
+  };
+  const graphData = makeGraph(coinPrices);
   return (
     <View style={styles.container}>
       <Header {...{ market_cap_rank, symbol }} image={small} />
@@ -50,12 +97,52 @@ const CoinDetailsScreen = () => {
           </Text>
         </View>
       </View>
-      <LineGraph
-        points={points}
-        color="#16c784"
-        animated={false}
-        style={{ width: 275, height: 175, alignSelf: "center", marginTop: 25 }}
-      />
+      <Canvas
+        style={{
+          height: GRAPH_HEIGHT,
+          width: GRAPH_WIDTH,
+        }}
+      >
+        <Group>
+          <Line
+            p1={vec(0, 1)}
+            p2={vec(GRAPH_WIDTH, 1)}
+            color="lightgrey"
+            strokeWidth={1}
+          />
+          <Line
+            p1={vec(0, GRAPH_HEIGHT / 4)}
+            p2={vec(GRAPH_WIDTH, GRAPH_HEIGHT / 4)}
+            color="lightgrey"
+            strokeWidth={1}
+          />
+          <Line
+            p1={vec(0, GRAPH_HEIGHT / 2)}
+            p2={vec(GRAPH_WIDTH, GRAPH_HEIGHT / 2)}
+            color="lightgrey"
+            strokeWidth={1}
+          />
+          <Line
+            p1={vec(0, (GRAPH_HEIGHT * 3) / 4)}
+            p2={vec(GRAPH_WIDTH, (GRAPH_HEIGHT * 3) / 4)}
+            color="lightgrey"
+            strokeWidth={1}
+          />
+          <Line
+            p1={vec(0, GRAPH_HEIGHT)}
+            p2={vec(GRAPH_WIDTH, GRAPH_HEIGHT)}
+            color="lightgrey"
+            strokeWidth={1}
+          />
+          <Path path={graphData.curve} strokeWidth={1} style="stroke">
+            <LinearGradient
+              start={vec(0, 0)}
+              end={vec(GRAPH_WIDTH, 0)}
+              colors={["#ff00ff", "#00ff00"]}
+            />
+          </Path>
+        </Group>
+      </Canvas>
     </View>
   );
 };
