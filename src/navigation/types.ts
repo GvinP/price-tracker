@@ -6,7 +6,12 @@ import {
 
 export type RootStackParamList = {
   Home: undefined;
-  Details: { coinId: string };
+  Details: {
+    coinId: string;
+    image: string;
+    symbol: string;
+    market_cap_rank: number;
+  };
 };
 
 type UseNavigationType = NavigationProp<RootStackParamList>;

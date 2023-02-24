@@ -1,9 +1,7 @@
 import { Text, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import coin from "../../../assets/data/crypto.json";
 import styles from "./styles";
-import Header from "./components/Header";
 import {
   Canvas,
   Group,
@@ -14,9 +12,13 @@ import {
   vec,
 } from "@shopify/react-native-skia";
 import { curveBasis, line, scaleLinear } from "d3";
-import { getCoinMarketChart } from "../../services/requests";
+import {
+  getCoinMarketChart,
+  getDetailedCoinData,
+} from "../../services/requests";
 import { useRoute } from "@react-navigation/native";
 import { RootRouteProps } from "../../navigation/types";
+import { CoinDetails } from "../../types";
 
 type DataPoint = {
   date: number;
@@ -27,19 +29,13 @@ const GRAPH_WIDTH = 400;
 
 const CoinDetailsScreen = () => {
   const route = useRoute<RootRouteProps<"Details">>();
-  const {
-    image: { small },
-    market_data: {
-      market_cap_rank,
-      current_price,
-      price_change_percentage_24h,
-    },
-    symbol,
-    name,
-    id,
-  } = coin;
+  const [coin, setCoin] = useState<CoinDetails>({} as CoinDetails);
   const [coinPrices, setCoinPrices] = useState<DataPoint[]>([]);
   const getCoin = async () => {
+    const coin = await getDetailedCoinData(route.params.coinId);
+    if (coin) {
+      setCoin(coin);
+    }
     const coinData = await getCoinMarketChart(route.params.coinId, 7);
     if (coinData) {
       const points: DataPoint[] = coinData.prices.map((el) => ({
@@ -53,7 +49,7 @@ const CoinDetailsScreen = () => {
     getCoin();
   }, []);
   const percentageColor =
-    price_change_percentage_24h < 0 ? "#EA3943" : "#16c784";
+    coin?.market_data?.price_change_percentage_24h < 0 ? "#EA3943" : "#16c784";
   const makeGraph = (data: DataPoint[]) => {
     const min = Math.min(...data.map((val) => val.value));
     const max = Math.max(...data.map((val) => val.value));
@@ -73,11 +69,12 @@ const CoinDetailsScreen = () => {
   const graphData = makeGraph(coinPrices);
   return (
     <View style={styles.container}>
-      <Header {...{ market_cap_rank, symbol }} image={small} />
       <View style={styles.priceContainer}>
         <View>
-          <Text style={styles.title}>{name}</Text>
-          <Text style={styles.price}>${current_price.usd}</Text>
+          <Text style={styles.title}>{coin?.name}</Text>
+          <Text style={styles.price}>
+            ${coin?.market_data?.current_price?.usd}
+          </Text>
         </View>
         <View
           style={[
@@ -86,13 +83,17 @@ const CoinDetailsScreen = () => {
           ]}
         >
           <AntDesign
-            name={price_change_percentage_24h < 0 ? "caretdown" : "caretup"}
+            name={
+              coin?.market_data?.price_change_percentage_24h < 0
+                ? "caretdown"
+                : "caretup"
+            }
             size={12}
             color={"white"}
             style={{ marginRight: 5 }}
           />
           <Text style={styles.priceChange}>
-            {price_change_percentage_24h.toFixed(2)} %
+            {coin?.market_data?.price_change_percentage_24h.toFixed(2)} %
           </Text>
         </View>
       </View>

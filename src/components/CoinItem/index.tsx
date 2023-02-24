@@ -2,8 +2,8 @@ import { Text, View, Image, Pressable } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
-import { CoinItemType } from "../../screens/HomeScreen";
 import { useAppNavigation } from "../../navigation/types";
+import { CoinItemType } from "../../types";
 
 const CoinItem: React.FC<CoinItemType> = ({
   image,
@@ -36,7 +36,14 @@ const CoinItem: React.FC<CoinItemType> = ({
   return (
     <Pressable
       style={styles.currencyContainer}
-      onPress={() => navigation.navigate("Details", { coinId: id })}
+      onPress={() =>
+        navigation.navigate("Details", {
+          coinId: id,
+          image,
+          market_cap_rank,
+          symbol,
+        })
+      }
     >
       <Image source={{ uri: image }} style={styles.image} />
       <View>
