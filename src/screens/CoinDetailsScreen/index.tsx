@@ -1,5 +1,5 @@
-import { Text, View, Image } from "react-native";
-import { Ionicons, EvilIcons, AntDesign } from "@expo/vector-icons";
+import { Text, View } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import coin from "../../../assets/data/crypto.json";
 import styles from "./styles";
@@ -32,20 +32,20 @@ const CoinDetailsScreen = () => {
       price_change_percentage_24h,
     },
     symbol,
-    prices,
     name,
-    id
+    id,
   } = coin;
+  const [coinPrices, setCoinPrices] = useState<DataPoint[]>([]);
   const getCoin = async () => {
     const coinData = await getCoinMarketChart(id, 7);
-    //@ts-ignore
-    const points: DataPoint[] = coinData.prices.map((el) => ({
-      date: el[0],
-      value: el[1],
-    }));
-    setCoinPrices(points);
+    if (coinData) {
+      const points: DataPoint[] = coinData.prices.map((el) => ({
+        date: el[0],
+        value: el[1],
+      }));
+      setCoinPrices(points);
+    }
   };
-  const [coinPrices, setCoinPrices] = useState<DataPoint[]>([]);
   useEffect(() => {
     getCoin();
   }, []);

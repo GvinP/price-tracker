@@ -1,4 +1,5 @@
 import axios from "axios";
+import { MarketChartData } from "../types";
 
 export const getDetailedCoinData = async (coinId: string) => {
   try {
@@ -16,7 +17,7 @@ export const getCoinMarketChart = async (
   selectedRange: number
 ) => {
   try {
-    const response = await axios.get(
+    const response = await axios.get<MarketChartData>(
       `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${selectedRange}&interval=hourly`
     );
     return response.data;
