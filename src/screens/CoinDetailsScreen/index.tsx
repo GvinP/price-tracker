@@ -15,6 +15,8 @@ import {
 } from "@shopify/react-native-skia";
 import { curveBasis, line, scaleLinear } from "d3";
 import { getCoinMarketChart } from "../../services/requests";
+import { useRoute } from "@react-navigation/native";
+import { RootRouteProps } from "../../navigation/types";
 
 type DataPoint = {
   date: number;
@@ -24,6 +26,7 @@ const GRAPH_HEIGHT = 150;
 const GRAPH_WIDTH = 400;
 
 const CoinDetailsScreen = () => {
+  const route = useRoute<RootRouteProps<"Details">>();
   const {
     image: { small },
     market_data: {
@@ -37,7 +40,7 @@ const CoinDetailsScreen = () => {
   } = coin;
   const [coinPrices, setCoinPrices] = useState<DataPoint[]>([]);
   const getCoin = async () => {
-    const coinData = await getCoinMarketChart(id, 7);
+    const coinData = await getCoinMarketChart(route.params.coinId, 7);
     if (coinData) {
       const points: DataPoint[] = coinData.prices.map((el) => ({
         date: el[0],
@@ -56,10 +59,6 @@ const CoinDetailsScreen = () => {
     const max = Math.max(...data.map((val) => val.value));
     const minDate = Math.min(...data.map((val) => val.date));
     const maxDate = Math.max(...data.map((val) => val.date));
-    console.log(min);
-    console.log(max);
-    console.log(minDate);
-    console.log(maxDate);
     const getYAxis = scaleLinear().domain([min, max]).range([GRAPH_HEIGHT, 0]);
     const getXAxis = scaleLinear()
       .domain([minDate, maxDate])

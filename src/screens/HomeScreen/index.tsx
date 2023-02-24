@@ -47,6 +47,7 @@ const HomeScreen = () => {
     <FlatList
       data={cryptocurrencies}
       renderItem={renderItem}
+      contentContainerStyle={styles.container}
       keyExtractor={(item) => item.id}
     />
   );
@@ -54,4 +55,10 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#121212",
+    paddingTop: 50,
+  },
+});
