@@ -4,6 +4,7 @@ import { AntDesign } from "@expo/vector-icons";
 import styles from "./styles";
 import { useAppNavigation } from "../../navigation/types";
 import { CoinItemType } from "../../types";
+import { COLOR_GREEN, COLOR_RED } from "../../../assets/colors";
 
 const CoinItem: React.FC<CoinItemType> = ({
   image,
@@ -17,7 +18,7 @@ const CoinItem: React.FC<CoinItemType> = ({
 }) => {
   const navigation = useAppNavigation();
   const percentageColor =
-    price_change_percentage_24h < 0 ? "#EA3943" : "#16c784";
+    price_change_percentage_24h < 0 ? COLOR_RED : COLOR_GREEN;
   const normalizeMarketCap = (marketCap: number) => {
     if (marketCap > 1_000_000_000_000) {
       return `${Math.floor(marketCap / 1_000_000_000_000)} T`;

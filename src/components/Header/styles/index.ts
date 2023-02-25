@@ -1,3 +1,4 @@
+import { COLOR_2, COLOR_WHITE } from "./../../../../assets/colors/index";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
@@ -13,16 +14,16 @@ const styles = StyleSheet.create({
   ticker: {
     fontSize: 17,
     fontWeight: "700",
-    color: "#FFFFFF",
+    color: COLOR_WHITE,
     marginHorizontal: 5,
   },
   text: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#FFFFFF",
+    color: COLOR_WHITE,
   },
   rankContainer: {
-    backgroundColor: "#585858",
+    backgroundColor: COLOR_2,
     paddingHorizontal: 5,
     paddingVertical: 2,
     borderRadius: 5,

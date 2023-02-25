@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
+import { COLOR_1, COLOR_2, COLOR_WHITE } from "../../../../assets/colors";
 
 const styles = StyleSheet.create({
   currencyContainer: {
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: "#282828",
+    borderBottomColor: COLOR_1,
     padding: 15,
   },
   image: {
@@ -14,17 +15,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   title: {
-    color: "#FFFFFF",
+    color: COLOR_WHITE,
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 3,
   },
   rank: {
-    color: "#FFFFFF",
+    color: COLOR_WHITE,
     fontWeight: "700",
   },
   rankContainer: {
-    backgroundColor: "#585858",
+    backgroundColor: COLOR_2,
     paddingHorizontal: 5,
     borderRadius: 5,
     alignItems: "center",
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   text: {
-    color: "#FFFFFF",
+    color: COLOR_WHITE,
     fontSize: 14,
     fontWeight: "500",
     marginRight: 5,

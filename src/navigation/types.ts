@@ -2,10 +2,16 @@ import {
   NavigationProp,
   useNavigation,
   RouteProp,
+  NavigatorScreenParams,
 } from "@react-navigation/native";
 
+export type BottomTabParamList = {
+  Homescreen: undefined;
+  Watchlist: undefined;
+};
+
 export type RootStackParamList = {
-  Home: undefined;
+  Home: NavigatorScreenParams<BottomTabParamList>;
   Details: {
     coinId: string;
     image: string;

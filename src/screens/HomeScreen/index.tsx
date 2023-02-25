@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import CoinItem from "../../components/CoinItem";
 import { CoinItemType } from "../../types";
 import { getMarketData } from "../../services/requests";
+import { COLOR_BACKGROUND } from "../../../assets/colors";
 
 const HomeScreen = () => {
   const [coins, setCoins] = useState<CoinItemType[]>([]);
@@ -35,7 +36,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#121212",
+    backgroundColor: COLOR_BACKGROUND,
     paddingTop: 50,
   },
 });

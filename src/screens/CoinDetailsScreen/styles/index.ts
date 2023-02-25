@@ -1,24 +1,24 @@
 import { StyleSheet } from "react-native";
+import { COLOR_BACKGROUND, COLOR_WHITE } from "../../../../assets/colors";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#121212",
-    // paddingTop: 50,
+    backgroundColor: COLOR_BACKGROUND,
     paddingHorizontal: 10,
   },
   title: {
-    color: "white",
+    color: COLOR_WHITE,
     fontSize: 15,
   },
   price: {
-    color: "white",
+    color: COLOR_WHITE,
     fontSize: 30,
     fontWeight: "600",
     letterSpacing: 1,
   },
   priceChange: {
-    color: "white",
+    color: COLOR_WHITE,
     fontSize: 17,
     fontWeight: "500",
   },

@@ -19,6 +19,12 @@ import {
 import { useRoute } from "@react-navigation/native";
 import { RootRouteProps } from "../../navigation/types";
 import { CoinDetails } from "../../types";
+import {
+  COLOR_2,
+  COLOR_GREEN,
+  COLOR_RED,
+  COLOR_WHITE,
+} from "../../../assets/colors";
 
 type DataPoint = {
   date: number;
@@ -49,7 +55,9 @@ const CoinDetailsScreen = () => {
     getCoin();
   }, []);
   const percentageColor =
-    coin?.market_data?.price_change_percentage_24h < 0 ? "#EA3943" : "#16c784";
+    coin?.market_data?.price_change_percentage_24h < 0
+      ? COLOR_RED
+      : COLOR_GREEN;
   const makeGraph = (data: DataPoint[]) => {
     const min = Math.min(...data.map((val) => val.value));
     const max = Math.max(...data.map((val) => val.value));
@@ -89,7 +97,7 @@ const CoinDetailsScreen = () => {
                 : "caretup"
             }
             size={12}
-            color={"white"}
+            color={COLOR_WHITE}
             style={{ marginRight: 5 }}
           />
           <Text style={styles.priceChange}>
@@ -107,31 +115,31 @@ const CoinDetailsScreen = () => {
           <Line
             p1={vec(0, 1)}
             p2={vec(GRAPH_WIDTH, 1)}
-            color="lightgrey"
+            color={COLOR_2}
             strokeWidth={1}
           />
           <Line
             p1={vec(0, GRAPH_HEIGHT / 4)}
             p2={vec(GRAPH_WIDTH, GRAPH_HEIGHT / 4)}
-            color="lightgrey"
+            color={COLOR_2}
             strokeWidth={1}
           />
           <Line
             p1={vec(0, GRAPH_HEIGHT / 2)}
             p2={vec(GRAPH_WIDTH, GRAPH_HEIGHT / 2)}
-            color="lightgrey"
+            color={COLOR_2}
             strokeWidth={1}
           />
           <Line
             p1={vec(0, (GRAPH_HEIGHT * 3) / 4)}
             p2={vec(GRAPH_WIDTH, (GRAPH_HEIGHT * 3) / 4)}
-            color="lightgrey"
+            color={COLOR_2}
             strokeWidth={1}
           />
           <Line
             p1={vec(0, GRAPH_HEIGHT)}
             p2={vec(GRAPH_WIDTH, GRAPH_HEIGHT)}
-            color="lightgrey"
+            color={COLOR_2}
             strokeWidth={1}
           />
           <Path path={graphData.curve} strokeWidth={1} style="stroke">
