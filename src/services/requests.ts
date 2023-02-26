@@ -5,7 +5,6 @@ export const getDetailedCoinData = async (coinId: string) => {
   try {
     const response = await axios.get<CoinDetails>(
       `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`
-      // `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=true&market_data=true&community_data=false&developer_data=false&sparkline=false`
     );
     return response.data;
   } catch (e) {
@@ -38,7 +37,7 @@ export const getMarketData = async (pageNumber = 1) => {
   }
 };
 
-export const getWatchlistedCoins = async (pageNumber = 1, coinIds: string) => {
+export const getWatchlistedCoins = async (pageNumber = 1, coinIds?: string) => {
   try {
     const response = await axios.get(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${coinIds}&order=market_cap_desc&per_page=50&page=${pageNumber}&sparkline=false&price_change_percentage=24h`

@@ -1,15 +1,26 @@
 import { Text, View, Image } from "react-native";
-import { Ionicons, EvilIcons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import styles from "./styles";
 import { RootStackParamList } from "../../navigation/types";
 import { COLOR_WHITE } from "../../../assets/colors";
 import { StackScreenProps } from "@react-navigation/stack";
+import { useWatchlist } from "../../context/Context";
 
 const Header: React.FC<StackScreenProps<RootStackParamList, "Details">> = (
   props
 ) => {
-  const { image, market_cap_rank, symbol } = props.route.params;
+  const { watchlistCoinIds, removeWatchlistCoinId, storeWatchlistCoinId } =
+    useWatchlist();
+  const { image, market_cap_rank, symbol, coinId } = props.route.params;
+  const checkIfCoinIsWatchlisted = () =>
+    watchlistCoinIds.some((coinIdValue) => coinIdValue === coinId);
+  const handleWatchlistCoin = () => {
+    if (checkIfCoinIsWatchlisted()) {
+      return removeWatchlistCoinId(coinId);
+    }
+    return storeWatchlistCoinId(coinId);
+  };
   return (
     <View style={styles.header}>
       <Ionicons
@@ -25,7 +36,12 @@ const Header: React.FC<StackScreenProps<RootStackParamList, "Details">> = (
           <Text style={styles.text}>#{market_cap_rank}</Text>
         </View>
       </View>
-      <EvilIcons name="user" color={COLOR_WHITE} size={30} />
+      <FontAwesome
+        name={checkIfCoinIsWatchlisted() ? "star" : "star-o"}
+        color={checkIfCoinIsWatchlisted() ? "#FFBF00" : COLOR_WHITE}
+        size={25}
+        onPress={handleWatchlistCoin}
+      />
     </View>
   );
 };

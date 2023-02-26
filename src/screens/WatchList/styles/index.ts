@@ -8,8 +8,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLOR_BACKGROUND,
-    alignItems: "center",
-    justifyContent: "center",
   },
   title: {
     color: COLOR_WHITE,

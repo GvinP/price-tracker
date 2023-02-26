@@ -11,7 +11,9 @@ interface WatchlistProviderProps {
   children: React.ReactNode;
 }
 
-const WatchlistContext = createContext<WatchlistContextType | null>(null);
+const WatchlistContext = createContext<WatchlistContextType>(
+  {} as WatchlistContextType
+);
 
 export const useWatchlist = () => useContext(WatchlistContext);
 

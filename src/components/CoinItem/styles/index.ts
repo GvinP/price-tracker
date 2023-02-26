@@ -3,6 +3,7 @@ import { COLOR_1, COLOR_2, COLOR_WHITE } from "../../../../assets/colors";
 
 const styles = StyleSheet.create({
   currencyContainer: {
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: StyleSheet.hairlineWidth,
