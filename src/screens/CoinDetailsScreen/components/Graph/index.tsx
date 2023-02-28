@@ -3,20 +3,19 @@ import React from "react";
 import {
   Canvas,
   Group,
-  Line,
   LinearGradient,
   Path,
   Skia,
   vec,
-  Text,
   useFont,
 } from "@shopify/react-native-skia";
 import { curveBasis, line, scaleLinear } from "d3";
-import { COLOR_2, COLOR_WHITE } from "../../../../../assets/colors";
+import GridLine from "../GridLine";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const GRAPH_HEIGHT = 150;
 const GRAPH_WIDTH = width;
+const ARRAY_LENGTH = 5;
 
 export type DataPoint = {
   date: number;
@@ -59,79 +58,26 @@ const Graph: React.FC<GraphProps> = ({ coinPrices }) => {
       }}
     >
       <Group>
-        <Line
-          p1={vec(0, 1)}
-          p2={vec(GRAPH_WIDTH - 65, 1)}
-          color={COLOR_2}
-          strokeWidth={1}
-        />
-        <Text
-          font={font}
-          text={graphData.max.toFixed(2).toString()}
-          x={GRAPH_WIDTH - 60}
-          y={10}
-          color={COLOR_WHITE}
-        />
-        <Line
-          p1={vec(0, GRAPH_HEIGHT / 4)}
-          p2={vec(GRAPH_WIDTH - 65, GRAPH_HEIGHT / 4)}
-          color={COLOR_2}
-          strokeWidth={1}
-        />
-        <Text
-          font={font}
-          text={(graphData.max - (graphData.max - graphData.min) / 4)
-            .toFixed(2)
-            .toString()}
-          x={GRAPH_WIDTH - 60}
-          y={GRAPH_HEIGHT / 4 + 3}
-          color={COLOR_WHITE}
-        />
-        <Line
-          p1={vec(0, GRAPH_HEIGHT / 2)}
-          p2={vec(GRAPH_WIDTH - 65, GRAPH_HEIGHT / 2)}
-          color={COLOR_2}
-          strokeWidth={1}
-        />
-        <Text
-          font={font}
-          text={(graphData.max - (graphData.max - graphData.min) / 2)
-            .toFixed(2)
-            .toString()}
-          x={GRAPH_WIDTH - 60}
-          y={GRAPH_HEIGHT / 2 + 3}
-          color={COLOR_WHITE}
-        />
-        <Line
-          p1={vec(0, (GRAPH_HEIGHT * 3) / 4)}
-          p2={vec(GRAPH_WIDTH - 65, (GRAPH_HEIGHT * 3) / 4)}
-          color={COLOR_2}
-          strokeWidth={1}
-        />
-        <Text
-          font={font}
-          text={(graphData.max - ((graphData.max - graphData.min) * 3) / 4)
-            .toFixed(2)
-            .toString()}
-          x={GRAPH_WIDTH - 60}
-          y={(GRAPH_HEIGHT * 3) / 4 + 3}
-          color={COLOR_WHITE}
-        />
-        <Line
-          p1={vec(0, GRAPH_HEIGHT - 1)}
-          p2={vec(GRAPH_WIDTH - 65, GRAPH_HEIGHT - 1)}
-          color={COLOR_2}
-          strokeWidth={1}
-        />
-        <Text
-          font={font}
-          text={(graphData.max - (graphData.max - graphData.min))
-            .toFixed(2)
-            .toString()}
-          x={GRAPH_WIDTH - 60}
-          y={GRAPH_HEIGHT - 1}
-          color={COLOR_WHITE}
-        />
+        {new Array(ARRAY_LENGTH).fill(0).map((_, index) => (
+          <GridLine
+            text={(
+              graphData.max -
+              ((graphData.max - graphData.min) * (ARRAY_LENGTH - 1 - index)) / 4
+            )
+              .toFixed(2)
+              .toString()}
+            textY={
+              (GRAPH_HEIGHT * (ARRAY_LENGTH - 1 - index)) / 4 +
+              (index === ARRAY_LENGTH - 1 ? 8 : index === 0 ? 0 : 3)
+            }
+            x0={0}
+            x1={GRAPH_WIDTH - 65}
+            y={
+              (GRAPH_HEIGHT * (ARRAY_LENGTH - 1 - index)) / 4 +
+              (index === ARRAY_LENGTH - 1 ? 1 : 0)
+            }
+          />
+        ))}
         <Path path={graphData.curve} strokeWidth={1} style="stroke">
           <LinearGradient
             start={vec(0, 0)}
